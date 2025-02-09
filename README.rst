@@ -1,5 +1,12 @@
 Pylgate
 ============
+.. image:: https://img.shields.io/github/v/release/DonutByte/pylgate
+    :target: https://github.com/DonutByte/pylgate/releases/latest
+    :alt: latest release
+
+.. image:: https://img.shields.io/badge/python-3.9+-blue
+   :target: https://www.python.org/doc/versions/
+   :alt: Supported Python versions
 
 .. image:: https://img.shields.io/badge/License-GPLv3-blue.svg
    :target: https://www.gnu.org/licenses/gpl-3.0
@@ -39,6 +46,16 @@ Introduction
 
 This project provides a simple way to generate PalGate's derived token, without using third-party libraries!
 
+.. attention::
+   This project is based on reverse engineering the PalGate App.
+   While every effort has been made to ensure accuracy, please be aware of the following:
+
+   1. Some information may be incomplete or incorrect.
+   2. The project may not fully represent the original functionality.
+   3. Updates or changes to the original app may render parts of this project obsolete or inaccurate.
+
+   If you encounter bugs, inaccuracies, or have improvements please open an `issue <https://github.com/DonutByte/pylgate/issues/new/choose>`_ or submit a PR
+
 ==========
 Installing
 ==========
@@ -52,9 +69,10 @@ Install the package using pip:
 ==========
 Usage
 ==========
-0. Install the package checkout `Installing`_ for guidance
+0. Install the package check out `Installing`_ for guidance
 1. Generate a session token, I have created a `script <examples/generate_linked_device_session_token.py>`_ that acquires a session token using the Device Linking feature, meaning your app will still work
-2. Have fun exploring PalGate's API :) - You can checkout `example script <examples/pylgate_usage.py>`_ that verifies the token
+2. Generate a *derived token* by calling ``pylgate.generate_token``, each *derived token* is only valid for a couple of seconds, so be sure to call ``generate_token`` each API call. You can check out an `example script <examples/pylgate_usage.py>`_ that verifies the token
+3. Have fun exploring PalGate's API :)
 
 ============
 Contributing
