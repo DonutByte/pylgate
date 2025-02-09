@@ -22,7 +22,7 @@ token = generate_token(SESSION_TOKEN, PHONE_NUMBER, TOKEN_TYPE)
 
 ANDROID_USER_AGENT = 'okhttp/4.9.3'
 
-response = requests.get(r'https://api1.pal-es.com/v1/bt/verify/token',
+response = requests.get(r'https://api1.pal-es.com/v1/bt/user/check-token',
                         headers={
                             'User-Agent': ANDROID_USER_AGENT,
                             'X-Bt-Token': token,
