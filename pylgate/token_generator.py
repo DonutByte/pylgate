@@ -17,15 +17,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 import struct
 import time
 
+from pylgate._aes import aes_encrypt_decrypt
 from pylgate._constants import (
     BLOCK_SIZE,
     T_C_KEY,
     TOKEN_SIZE,
     TIMESTAMP_OFFSET,
 )
-
-from pylgate._aes import aes_encrypt_decrypt
-
 from pylgate.types import TokenType
 
 
@@ -51,7 +49,6 @@ def generate_token(session_token: bytes,
 
     Raises:
         ValueError: if `session_token` is not 16 bytes.
-            if `phone_number` is not 12 digits
             if `token_type`'s value does not exist
     """
     if len(session_token) != BLOCK_SIZE:
