@@ -20,7 +20,6 @@ import time
 from pylgate._constants import (
     BLOCK_SIZE,
     T_C_KEY,
-    PHONE_NUMBER_DIGIT_LENGTH,
     TOKEN_SIZE,
     TIMESTAMP_OFFSET,
 )
@@ -57,9 +56,6 @@ def generate_token(session_token: bytes,
     """
     if len(session_token) != BLOCK_SIZE:
         raise ValueError('Invalid session token')
-
-    if len(str(phone_number)) != PHONE_NUMBER_DIGIT_LENGTH:
-        raise ValueError(f'phone number is not {PHONE_NUMBER_DIGIT_LENGTH} digits')
 
     if timestamp_ms is None:
         timestamp_ms = int(time.time())
