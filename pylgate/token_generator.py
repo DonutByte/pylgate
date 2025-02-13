@@ -65,7 +65,9 @@ def generate_token(session_token: bytes,
     step_2_result = _step_2(step_2_key, timestamp_ms, timestamp_offset)
 
     result = bytearray(TOKEN_SIZE)
-    if token_type == TokenType.PRIMARY:
+    if token_type == TokenType.SMS:
+        result[0] = 0x01
+    elif token_type == TokenType.PRIMARY:
         result[0] = 0x11
     elif token_type == TokenType.SECONDARY:
         result[0] = 0x21
