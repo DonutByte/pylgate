@@ -41,7 +41,7 @@ class PalgateAPI:
             response = await client.post(
                 urljoin(PalgateAPI._BASE_URL, f'secondary/init/{unique_id}'),
                 json={
-                    'secondary': str(TokenType.SECONDARY),  # FIXME this **OVERRIDES** secondary token!
+                    'secondary': str(TokenType.SECONDARY.value),  # FIXME this **OVERRIDES** secondary token!
                     'name': 'test',
                 },
                 headers=PalgateAPI._get_authenticated_headers(derived_token)
