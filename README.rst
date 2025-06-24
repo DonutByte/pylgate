@@ -4,7 +4,7 @@ Pylgate
     :target: https://github.com/DonutByte/pylgate/releases/latest
     :alt: latest release
 
-.. image:: https://img.shields.io/badge/python-3.9+-blue
+.. image:: https://img.shields.io/badge/python-3.10+-blue
    :target: https://www.python.org/doc/versions/
    :alt: Supported Python versions
 
