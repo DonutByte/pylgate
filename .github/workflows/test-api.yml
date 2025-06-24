@@ -34,7 +34,9 @@ jobs:
           python -m pip install . --group tests
       - name: Test with pytest
         run: |
-          pytest -v --junit-xml=${{ env.TEST_REPORT_OUTPUT_PATH }} --session-token=${{ secrets.SESSION_TOKEN }} --phone-number=${{ secrets.PHONE_NUMBER }} --token-type=${{ vars.TOKEN_TYPE }}
+          # Run all tests except test which opens a gate
+          TESTS_TO_RUN="not test_gate_open"
+          pytest -v -k "${TESTS_TO_RUN}" --junit-xml=${{ env.TEST_REPORT_OUTPUT_PATH }} --session-token=${{ secrets.SESSION_TOKEN }} --phone-number=${{ secrets.PHONE_NUMBER }} --token-type=${{ vars.TOKEN_TYPE }}
       - name: Test Summary
         uses: test-summary/action@v2
         if: always()
