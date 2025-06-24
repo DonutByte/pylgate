@@ -25,6 +25,12 @@ async def test_device_linking(derived_token_generator):
 
 
 @pytest.mark.asyncio
+async def test_list_all_gates(derived_token_generator):
+    response = await PalgateAPI.get_all_devices(derived_token_generator())
+    assert response['msg'] == 'all my devices', 'Unexpected message from server'
+
+
+@pytest.mark.asyncio
 async def test_gate_open(derived_token_generator):
     response = await PalgateAPI.get_all_devices(derived_token_generator())
     assert response['msg'] == 'all my devices', 'Unexpected message from server'
