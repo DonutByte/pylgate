@@ -1,0 +1,42 @@
+name: PalGate API Tests
+on:
+  push:
+    branches:
+      - main
+  schedule:
+    # Run nightly Sun-Fri at 04:17 AM
+    - cron: '17 4 * * 0-5'
+jobs:
+  tests:
+    name: 'Run Tests'
+    environment: production
+    runs-on: ${{matrix.os}}
+    strategy:
+      matrix:
+        python-version: [ '3.10', '3.11', '3.12', '3.13' ]
+        os: [ ubuntu-latest, windows-latest, macos-latest ]
+      fail-fast: false
+      max-parallel: 1 # To avoid hitting rate limit and flakiness of tests (particularly test_device_linking)
+    env:
+      TEST_REPORT_OUTPUT_PATH: .test_report.xml
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: 'pip'
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip 
+          python -m pip install . --group tests
+      - name: Test with pytest
+        run: |
+          pytest -v --junit-xml=${{ env.TEST_REPORT_OUTPUT_PATH }} --session-token=${{ secrets.SESSION_TOKEN }} --phone-number=${{ secrets.PHONE_NUMBER }} --token-type=${{ vars.TOKEN_TYPE }}
+      - name: Test Summary
+        uses: test-summary/action@v2
+        if: always()
+        with:
+          paths: ${{ env.TEST_REPORT_OUTPUT_PATH }}
