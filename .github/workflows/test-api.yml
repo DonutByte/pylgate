@@ -9,7 +9,6 @@ on:
 jobs:
   tests:
     name: 'Run Tests'
-    environment: production
     runs-on: ${{matrix.os}}
     strategy:
       matrix:
