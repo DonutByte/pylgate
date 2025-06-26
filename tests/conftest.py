@@ -23,7 +23,7 @@ from pylgate.types import TokenType
 def pytest_addoption(parser):
     parser.addoption('--session-token', action='store', required=True)
     parser.addoption('--phone-number', action='store', required=True, type=int)
-    parser.addoption('--token-type', action='store', required=True, type=int)
+    parser.addoption('--token-type', action='store', required=True, type=int, choices=TokenType.values())
 
 
 @dataclass
@@ -39,7 +39,7 @@ def session_context(request) -> SessionContext:
     phone_number = request.config.getoption('--phone-number')
     token_type = request.config.getoption('--token-type')
 
-    return SessionContext(bytes.fromhex(session_token), int(phone_number), TokenType(int(token_type)))
+    return SessionContext(bytes.fromhex(session_token), phone_number, TokenType(token_type))
 
 
 @pytest.fixture(scope='module')

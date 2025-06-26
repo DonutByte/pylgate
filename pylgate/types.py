@@ -21,3 +21,7 @@ class TokenType(IntEnum):
     SMS = 0
     PRIMARY = 1     # Linked Device - first
     SECONDARY = 2   # Linked Device - second
+
+    @classmethod
+    def values(cls) -> list[int]:
+        return [token_type.value for token_type in cls]
