@@ -1,4 +1,4 @@
-Pylgate
+pylgate
 ============
 .. image:: https://img.shields.io/github/v/release/DonutByte/pylgate
     :target: https://github.com/DonutByte/pylgate/releases/latest
@@ -7,6 +7,10 @@ Pylgate
 .. image:: https://img.shields.io/badge/python-3.10+-blue
    :target: https://www.python.org/doc/versions/
    :alt: Supported Python versions
+
+.. image:: https://github.com/DonutByte/pylgate/actions/workflows/test-api.yml/badge.svg?branch=main
+   :target: https://github.com/DonutByte/pylgate
+   :alt: Tests workflow status
 
 .. image:: https://img.shields.io/badge/License-GPLv3-blue.svg
    :target: https://www.gnu.org/licenses/gpl-3.0
@@ -53,6 +57,9 @@ This project provides a simple way to generate PalGate's derived token, without 
    3. Updates or changes to the original app may render parts of this project obsolete or inaccurate.
 
    If you encounter bugs, inaccuracies, or have improvements please open an `issue <https://github.com/DonutByte/pylgate/issues/new/choose>`_ or submit a PR
+
+That said, we have implemented tests to help ensure that this project functions correctly and integrates properly with the API.
+You can read more about tests `here <tests/README.rst>`_
 
 Terminology
 -----------

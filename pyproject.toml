@@ -40,5 +40,14 @@ tests = [
     "httpx==0.28.1",
 ]
 
+[tool.pytest.ini_options]
+addopts = "--strict-markers"
+markers = [
+    "causes_side_effects: mark test as causing side-effects other than making an API request",
+]
+testpaths = [
+    "tests",
+]
+
 [tool.hatch.version]
 path = "pylgate/__init__.py"
