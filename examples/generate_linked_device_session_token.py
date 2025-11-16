@@ -51,7 +51,7 @@ def login_via_device_linking() -> (int, bytes, TokenType):
     check_status(phone_number, session_token, token_type)
 
     """
-    In palgate app version 1.6.0046 GatesFragment was changed to only update user details if it wasn't already updated ("filterUploaded" in prefences)
+    In palgate app version 1.6.0046 GatesFragment was changed to only update user details if it wasn't already updated ("filterUploaded" in preferences)
     This caused a bug (see https://github.com/DonutByte/pylgate/issues/19) where our request was denied by the server
     """
     # print('updating user info...')
