@@ -4,8 +4,8 @@ on:
     branches:
       - main
   schedule:
-    # Run nightly Sun-Fri at 04:17 AM
-    - cron: '17 4 * * 0-5'
+    # Run every Sunday, Tuesday and Thursday at 04:17 AM
+    - cron: '17 4 * * SUN,TUE,THU'
 jobs:
   tests:
     name: 'Run Tests'
