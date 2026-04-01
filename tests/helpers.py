@@ -44,7 +44,7 @@ class PalgateAPI:
             normalized_device_id, output_num = device_id, 1
 
         return await PalgateAPI._do_get(
-            f"device/{device_id}/open-gate?openBy=100&outputNum={output_num}",
+            f"device/{normalized_device_id}/open-gate?openBy=100&outputNum={output_num}",
             PalgateAPI._get_authenticated_headers(derived_token),
         )
 
