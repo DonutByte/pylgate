@@ -12,6 +12,7 @@ you must install pylgate via:
 And install `qrcode` and `requests` via
 `pip install qrcode requests`
 """
+
 import time
 import traceback
 import uuid
@@ -24,30 +25,32 @@ import requests
 import pylgate
 from pylgate.types import TokenType
 
-ANDROID_USER_AGENT = 'okhttp/4.9.3'
-BASE_URL = 'https://api1.pal-es.com/v1/bt/'
+ANDROID_USER_AGENT = "okhttp/4.9.3"
+BASE_URL = "https://api1.pal-es.com/v1/bt/"
 
 
 def main():
     try:
         phone_number, session_token, token_type = login_via_device_linking()
-        print('Logged-in successfully :)')
-        print(f'Phone number (user id): {phone_number}')
-        print(f'Session token: {session_token.hex()}')
-        print(f'Token type: {token_type} (TokenType.{token_type.name})')
+        print("Logged-in successfully :)")
+        print(f"Phone number (user id): {phone_number}")
+        print(f"Session token: {session_token.hex()}")
+        print(f"Token type: {token_type} (TokenType.{token_type.name})")
     except Exception:
-        print('Failed to login.\n'
-              'To get help please open an issue here https://github.com/DonutByte/pylgate/issues/new/choose\n'
-              'Please provide the following traceback and any additional info that might help:')
+        print(
+            "Failed to login.\n"
+            "To get help please open an issue here https://github.com/DonutByte/pylgate/issues/new/choose\n"
+            "Please provide the following traceback and any additional info that might help:"
+        )
         traceback.print_exc()
         exit(1)
 
 
 def login_via_device_linking() -> (int, bytes, TokenType):
-    print('Logging-in via Device Linking, Please open your palgate app and scan this QR code:')
+    print("Logging-in via Device Linking, Please open your palgate app and scan this QR code:")
     phone_number, session_token, token_type = start_device_linking()
 
-    print('checking status...')
+    print("checking status...")
     check_status(phone_number, session_token, token_type)
 
     """
@@ -57,7 +60,7 @@ def login_via_device_linking() -> (int, bytes, TokenType):
     # print('updating user info...')
     # update_user(phone_number, session_token, token_type)
 
-    print('checking derived token...')
+    print("checking derived token...")
     check_token(phone_number, session_token, token_type)
 
     return phone_number, session_token, token_type
@@ -78,57 +81,63 @@ def start_device_linking() -> (int, bytes, TokenType):
     qr.print_ascii(invert=True)
 
     response = requests.get(
-        urljoin(BASE_URL, f'un/secondary/init/{unique_id}'),
+        urljoin(BASE_URL, f"un/secondary/init/{unique_id}"),
         headers=_basic_headers(),
     )
 
     response_data = _validate_response(response)
-    phone_number = int(response_data['user']['id'])
-    session_token = bytes.fromhex(response_data['user']['token'])
-    token_type = TokenType(int(response_data['secondary']))
+    phone_number = int(response_data["user"]["id"])
+    session_token = bytes.fromhex(response_data["user"]["token"])
+    token_type = TokenType(int(response_data["secondary"]))
 
     return phone_number, session_token, token_type
 
 
 def check_status(phone_number: int, session_token: bytes, token_type: TokenType) -> None:
-    status_response = requests.get(urljoin(BASE_URL, 'secondary/status'),
-                                   headers=_get_authenticated_headers(phone_number, session_token, token_type))
+    status_response = requests.get(
+        urljoin(BASE_URL, "secondary/status"),
+        headers=_get_authenticated_headers(phone_number, session_token, token_type),
+    )
 
     _ = _validate_response(status_response)
 
 
 def update_user(phone_number: int, session_token: bytes, token_type: TokenType) -> None:
-    update_response = requests.put(urljoin(BASE_URL, 'user'),
-                                   data={"filterType": "listFilter"},
-                                   headers=_get_authenticated_headers(phone_number, session_token, token_type))
+    update_response = requests.put(
+        urljoin(BASE_URL, "user"),
+        data={"filterType": "listFilter"},
+        headers=_get_authenticated_headers(phone_number, session_token, token_type),
+    )
 
     _ = _validate_response(update_response)
 
 
 def check_token(phone_number: int, session_token: bytes, token_type: TokenType) -> None:
     ts = int(time.time())
-    check_token_response = requests.get(urljoin(BASE_URL, f'user/check-token?ts={ts}&ts_diff=0'),
-                                        headers=_get_authenticated_headers(phone_number, session_token, token_type))
+    check_token_response = requests.get(
+        urljoin(BASE_URL, f"user/check-token?ts={ts}&ts_diff=0"),
+        headers=_get_authenticated_headers(phone_number, session_token, token_type),
+    )
 
     _ = _validate_response(check_token_response)
 
 
 def _basic_headers() -> dict[str, str]:
     return {
-        'User-Agent': ANDROID_USER_AGENT,
+        "User-Agent": ANDROID_USER_AGENT,
     }
 
 
 def _get_authenticated_headers(phone_number: int, session_token: bytes, token_type: TokenType) -> dict[str, str]:
     return {
         **_basic_headers(),
-        'X-Bt-Token': pylgate.generate_token(session_token, phone_number, token_type),
+        "X-Bt-Token": pylgate.generate_token(session_token, phone_number, token_type),
     }
 
 
 def _validate_response(response: requests.Response) -> dict[str, Any]:
     response_data = response.json()
-    if not response.ok or response_data['err'] or response_data['status'] != 'ok':
+    if not response.ok or response_data["err"] or response_data["status"] != "ok":
         raise RuntimeError(f"Step failed. full response: {response_data}")
 
     return response_data

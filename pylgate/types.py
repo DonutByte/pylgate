@@ -14,13 +14,14 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
+
 from enum import IntEnum
 
 
 class TokenType(IntEnum):
     SMS = 0
-    PRIMARY = 1     # Linked Device - first
-    SECONDARY = 2   # Linked Device - second
+    PRIMARY = 1  # Linked Device - first
+    SECONDARY = 2  # Linked Device - second
 
     @classmethod
     def values(cls) -> list[int]:

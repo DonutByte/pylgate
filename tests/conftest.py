@@ -12,6 +12,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
+
 from dataclasses import dataclass
 
 import pytest
@@ -21,9 +22,9 @@ from pylgate.types import TokenType
 
 
 def pytest_addoption(parser):
-    parser.addoption('--session-token', action='store', required=True)
-    parser.addoption('--phone-number', action='store', required=True, type=int)
-    parser.addoption('--token-type', action='store', required=True, type=int, choices=TokenType.values())
+    parser.addoption("--session-token", action="store", required=True)
+    parser.addoption("--phone-number", action="store", required=True, type=int)
+    parser.addoption("--token-type", action="store", required=True, type=int, choices=TokenType.values())
 
 
 @dataclass
@@ -33,16 +34,16 @@ class SessionContext:
     token_type: TokenType
 
 
-@pytest.fixture(scope='module')
+@pytest.fixture(scope="module")
 def session_context(request) -> SessionContext:
-    session_token = request.config.getoption('--session-token')
-    phone_number = request.config.getoption('--phone-number')
-    token_type = request.config.getoption('--token-type')
+    session_token = request.config.getoption("--session-token")
+    phone_number = request.config.getoption("--phone-number")
+    token_type = request.config.getoption("--token-type")
 
     return SessionContext(bytes.fromhex(session_token), phone_number, TokenType(token_type))
 
 
-@pytest.fixture(scope='module')
+@pytest.fixture(scope="module")
 def derived_token_generator(session_context):
     """
     Helper function to get a derived token lazily
