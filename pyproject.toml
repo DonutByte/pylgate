@@ -34,6 +34,9 @@ dependencies = []
 "Source Code" = "https://github.com/DonutByte/pylgate"
 
 [dependency-groups]
+dev = [
+    "pre-commit>=4.3.0",
+]
 tests = [
     "pytest==8.4.1",
     "pytest-asyncio==1.0.0",
@@ -51,3 +54,10 @@ testpaths = [
 
 [tool.hatch.version]
 path = "pylgate/__init__.py"
+
+[tool.ruff]
+line-length = 120
+
+[tool.ruff.format]
+line-ending = "lf"
+exclude = ["pylgate/_constants.py"]
