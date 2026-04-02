@@ -14,6 +14,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
+
 import struct
 import time
 
@@ -29,12 +30,14 @@ from pylgate._aes import aes_encrypt_decrypt
 from pylgate.types import TokenType
 
 
-def generate_token(session_token: bytes,
-                   phone_number: int,
-                   token_type: TokenType,
-                   *,
-                   timestamp_ms: int | None = None,
-                   timestamp_offset: int = TIMESTAMP_OFFSET) -> str:
+def generate_token(
+    session_token: bytes,
+    phone_number: int,
+    token_type: TokenType,
+    *,
+    timestamp_ms: int | None = None,
+    timestamp_offset: int = TIMESTAMP_OFFSET,
+) -> str:
     """Generates a derived token for PalGate API
     Args:
         session_token (bytes): Base token generated either via SMS or Device Linking.
@@ -55,7 +58,7 @@ def generate_token(session_token: bytes,
             if `token_type`'s value does not exist
     """
     if len(session_token) != BLOCK_SIZE:
-        raise ValueError('Invalid session token')
+        raise ValueError("Invalid session token")
 
     if timestamp_ms is None:
         timestamp_ms = int(time.time())
@@ -72,11 +75,11 @@ def generate_token(session_token: bytes,
     elif token_type == TokenType.SECONDARY:
         result[0] = 0x21
     else:
-        raise ValueError(f'unknown token type: {token_type}')
+        raise ValueError(f"unknown token type: {token_type}")
 
-    result[1] = (phone_number >> 0x28) & 0xff
-    result[2] = (phone_number >> 0x20) & 0xff
-    result[3] = (phone_number >> 0x18) & 0xff
+    result[1] = (phone_number >> 0x28) & 0xFF
+    result[2] = (phone_number >> 0x20) & 0xFF
+    result[3] = (phone_number >> 0x18) & 0xFF
     result[4:7] = struct.pack(">Q", phone_number)[5:8]
 
     result[7:23] = step_2_result
@@ -86,14 +89,14 @@ def generate_token(session_token: bytes,
 
 def _step_1(session_token: bytes, phone_number: int) -> bytes:
     key = T_C_KEY.copy()
-    key[6:12] = struct.pack('>Q', phone_number)[2:]
+    key[6:12] = struct.pack(">Q", phone_number)[2:]
 
     return aes_encrypt_decrypt(session_token, bytes(key), is_encrypt=True)
 
 
 def _step_2(result_from_step_1: bytes, timestamp_ms: int, timestamp_offset: int) -> bytes:
     next_state = bytearray(BLOCK_SIZE)
-    next_state[1:3] = struct.pack('<H', 0xa0a)
-    next_state[10:14] = struct.pack('>I', timestamp_ms + timestamp_offset)
+    next_state[1:3] = struct.pack("<H", 0xA0A)
+    next_state[10:14] = struct.pack(">I", timestamp_ms + timestamp_offset)
 
     return aes_encrypt_decrypt(bytes(next_state), result_from_step_1, is_encrypt=False)

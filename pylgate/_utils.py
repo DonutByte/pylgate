@@ -19,12 +19,13 @@ Warning:
     user. Changes to this module are not considered breaking changes and may not be documented in
     the changelog.
 """
+
 import ctypes
 
 
 def galois_mul2(value: ctypes.c_uint8) -> ctypes.c_uint8:
     if value.value >> 7:
-        return ctypes.c_uint8((value.value << 1) ^ 0x1b)
+        return ctypes.c_uint8((value.value << 1) ^ 0x1B)
     else:
         return ctypes.c_uint8(value.value << 1)
 

@@ -19,6 +19,7 @@ Warning:
     user. Changes to this module are not considered breaking changes and may not be documented in
     the changelog.
 """
+
 import ctypes
 
 from pylgate._constants import S_BOX, RCON, INVERSE_S_BOX, BLOCK_SIZE, KEY_SIZE
